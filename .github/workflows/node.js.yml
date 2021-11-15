@@ -12,7 +12,6 @@ jobs:
           path: public/
 
     needs: build
-
     steps:
       - uses: actions/checkout@v2
       - name: npm install and build webpack
@@ -39,6 +38,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    steps:
+    - name: Label when approved
+      uses: pullreminders/label-when-approved-action@master
+      env:
+        APPROVALS: "2"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ADD_LABEL: "approved"
+        REMOVE_LABEL: "awaiting%20review"
     - name: npm install, and test
       run: |
         npm install
